@@ -7,7 +7,12 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 3000
 
+COPY package.json .
+
+RUN npm install
+
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+
 RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
