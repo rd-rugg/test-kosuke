@@ -52,8 +52,22 @@ export async function POST(request: NextRequest) {
     // Update user profile with new image URL
     await user.update({ profileImageUrl: imageUrl });
 
+    // Refresh user object to get the updated data from StackAuth
+    const updatedUser = await stackServerApp.getUser();
+    if (!updatedUser) {
+      throw new Error('Failed to retrieve updated user data');
+    }
+
+    // Verify the profile image was updated in StackAuth
+    if (updatedUser.profileImageUrl !== imageUrl) {
+      console.error('Profile image URL mismatch after StackAuth update', {
+        expected: imageUrl,
+        actual: updatedUser.profileImageUrl,
+      });
+    }
+
     // Sync the updated user data to local database
-    await syncUserFromStackAuth(user);
+    await syncUserFromStackAuth(updatedUser);
 
     return NextResponse.json({
       success: true,
