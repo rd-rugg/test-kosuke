@@ -8,7 +8,7 @@ Project template for [Kosuke](https://github.com/filopedraz/kosuke-core/).
 
 We use PostgreSQL as the database. The database is configured in the docker-compose file. You need to setup the following environment variables in the `.env` file:
 
-- `POSTGRES_URL`
+- `DB_POSTGRES_URL`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
