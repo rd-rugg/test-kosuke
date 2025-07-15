@@ -1,13 +1,35 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { useMemo, createContext, useContext, ReactNode, useState } from 'react';
+import type { UserResource } from '@clerk/types';
 
-interface ProfileImageContextType {
-  currentImageUrl: string | null;
-  setCurrentImageUrl: (url: string | null) => void;
+/**
+ * Hook to handle profile image URLs from Clerk
+ * Prioritizes custom uploaded images over Clerk's default images
+ */
+export function useProfileImageUrl(user?: UserResource | null) {
+  const { currentImageUrl } = useProfileImage();
+
+  return useMemo(() => {
+    // Priority order:
+    // 1. Current image URL from context (newly uploaded)
+    // 2. Custom profile image from user metadata
+    // 3. Clerk's default imageUrl
+    if (currentImageUrl) return currentImageUrl;
+    if (user?.publicMetadata?.customProfileImageUrl)
+      return user.publicMetadata.customProfileImageUrl;
+    return user?.imageUrl || null;
+  }, [currentImageUrl, user?.publicMetadata?.customProfileImageUrl, user?.imageUrl]);
 }
 
-const ProfileImageContext = createContext<ProfileImageContextType | undefined>(undefined);
+// Profile Image Context for managing profile image state
+const ProfileImageContext = createContext<{
+  currentImageUrl: string | null;
+  setCurrentImageUrl: (url: string | null) => void;
+}>({
+  currentImageUrl: null,
+  setCurrentImageUrl: () => {},
+});
 
 export function ProfileImageProvider({ children }: { children: ReactNode }) {
   const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
@@ -21,14 +43,8 @@ export function ProfileImageProvider({ children }: { children: ReactNode }) {
 
 export function useProfileImage() {
   const context = useContext(ProfileImageContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useProfileImage must be used within a ProfileImageProvider');
   }
   return context;
-}
-
-export function useProfileImageUrl(userImageUrl?: string | null) {
-  const { currentImageUrl } = useProfileImage();
-  // Return the current uploaded image if available, otherwise fall back to user's image
-  return currentImageUrl || userImageUrl;
 }
