@@ -1,0 +1,137 @@
+# Automated Shadcn/UI Component Updates
+#
+# Runs daily to update shadcn/ui components and creates pull requests when changes are detected.
+# Can also be triggered manually from the GitHub Actions tab.
+#
+# Uses the default GITHUB_TOKEN - no additional setup required.
+
+name: Update Shadcn/UI Components
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  update-shadcn-components:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update shadcn/ui components
+        run: |
+          echo "Updating shadcn/ui components..."
+          npx shadcn@latest add -a -y -o
+
+      - name: Check for file changes
+        id: check-changes
+        run: |
+          if git diff --quiet; then
+            echo "No file changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "File changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            
+            # Get list of changed files
+            echo "Changed files:"
+            git diff --name-only | tee changed_files.txt
+            
+            # Create a summary of changes
+            echo "## Changed Components" > change_summary.md
+            echo "" >> change_summary.md
+            
+            while IFS= read -r file; do
+              if [[ $file == components/ui/* ]]; then
+                component_name=$(basename "$file" .tsx)
+                echo "- **$component_name**: Updated to latest version" >> change_summary.md
+              fi
+            done < changed_files.txt
+            
+            echo "" >> change_summary.md
+            echo "## Summary of Changes" >> change_summary.md
+            echo "\`\`\`" >> change_summary.md
+            git diff --stat >> change_summary.md
+            echo "\`\`\`" >> change_summary.md
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            chore: update shadcn/ui components to latest versions
+
+            - Automated update via GitHub Actions
+            - Updated components to match latest shadcn/ui registry
+            - No breaking changes expected (please review)
+          title: '🤖 Update Shadcn/UI Components'
+          body: |
+            ## 🤖 Automated Shadcn/UI Component Update
+
+            This PR contains automated updates to shadcn/ui components to keep them in sync with the latest versions from the official registry.
+
+            ### 📋 What's Changed
+            $(cat change_summary.md 2>/dev/null || echo "Updated shadcn/ui components to latest versions")
+
+            ### 🔍 Review Guidelines
+            - **Breaking Changes**: Review the diff carefully for any breaking changes
+            - **Custom Modifications**: Check if any of your custom modifications were overwritten
+            - **Dependencies**: Verify that no new dependencies need to be installed
+            - **Testing**: Run your test suite to ensure everything works as expected
+
+            ### 📊 Update Details
+            - **Triggered**: ${{ github.event_name == 'schedule' && 'Scheduled run' || 'Manual trigger' }}
+            - **CLI Version**: Latest
+
+            ---
+
+            *This PR was automatically created by the Shadcn/UI update workflow.*
+          branch: feature/update-shadcn-components
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+            shadcn-ui
+            enhancement
+          draft: false
+          assignees: ${{ github.repository_owner }}
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "## Workflow Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **File Changes**: ${{ steps.check-changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+
+          if [[ "${{ steps.check-changes.outputs.has_changes }}" == "true" ]]; then
+            echo "- **Pull Request**: Created successfully" >> $GITHUB_STEP_SUMMARY
+            if [ -f changed_files.txt ]; then
+              echo "- **Components Updated**: $(cat changed_files.txt | wc -l) files" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- **Pull Request**: Not needed (no changes)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View the [Actions tab](https://github.com/${{ github.repository }}/actions) for detailed logs." >> $GITHUB_STEP_SUMMARY

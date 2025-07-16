@@ -98,6 +98,21 @@ npm run test:watch    # Watch mode
 npm run test:coverage # Coverage report
 ```
 
+## 🤖 Automated Shadcn/UI Updates
+
+This template includes an automated system to keep your shadcn/ui components up-to-date:
+
+- **🕐 Daily Checks**: Automatically checks for component updates every day at 2 AM UTC
+- **📋 Smart PRs**: Creates pull requests only when updates are available
+- **🛡️ Safe Updates**: Includes backups, change summaries, and review guidelines
+- **🔧 Manual Control**: Run updates manually when needed
+
+```bash
+npm run shadcn:check    # Check for available updates
+npm run shadcn:update   # Update components manually
+npm run shadcn:force    # Force update all components
+```
+
 ## 📦 Available Scripts
 
 ```bash

@@ -18,7 +18,10 @@
     "db:migrate:prod": "drizzle-kit migrate --verbose",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "npx tsx -r dotenv/config lib/db/seed.ts"
+    "db:seed": "npx tsx -r dotenv/config lib/db/seed.ts",
+    "shadcn:update": "./scripts/update-shadcn.sh",
+    "shadcn:check": "npx shadcn@latest diff",
+    "shadcn:force": "./scripts/update-shadcn.sh --force"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.0",
