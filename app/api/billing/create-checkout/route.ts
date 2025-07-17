@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { Polar } from '@polar-sh/sdk';
 import { ensureUserSynced } from '@/lib/user-sync';
-import { getUserSubscription, canCreateNewSubscription } from '@/lib/billing/utils';
+import { getUserSubscription, getSubscriptionEligibility, polar } from '@/lib/billing';
 import { ApiErrorHandler } from '@/lib/api/errors';
-
-// Initialize Polar API
-const polar = new Polar({
-  accessToken: process.env.POLAR_ACCESS_TOKEN!,
-  server: process.env.POLAR_ENVIRONMENT === 'sandbox' ? 'sandbox' : 'production',
-});
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,15 +28,15 @@ export async function POST(request: NextRequest) {
     // Check user's current subscription status
     const currentSubscription = await getUserSubscription(user.id);
 
-    // Check if user can create a new subscription
-    const eligibility = canCreateNewSubscription(currentSubscription);
+    // Check if user can create a new subscription or upgrade existing one
+    const eligibility = getSubscriptionEligibility(currentSubscription);
 
-    if (!eligibility.canCreate) {
-      // Following best practices: Direct to customer portal instead of auto-syncing
+    // Allow if user can create new subscription OR upgrade existing one
+    if (!eligibility.canCreateNew && !eligibility.canUpgrade) {
       return NextResponse.json(
         {
           success: false,
-          error: eligibility.reason,
+          error: eligibility.reason || 'Cannot create new subscription or upgrade at this time.',
           action: 'customer_portal_required',
           message:
             'Please manage your existing subscription first. Contact support or check your Polar emails for subscription management links.',
