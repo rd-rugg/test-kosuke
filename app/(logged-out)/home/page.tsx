@@ -210,7 +210,7 @@ export default function HomePage() {
       </section>
 
       {/* Tech Stack - Minimal Grid */}
-      <section className="py-20">
+      <section className="py-48">
         <div className="container mx-auto px-6">
           <motion.div
             className="text-center mb-16"
@@ -237,7 +237,7 @@ export default function HomePage() {
                 transition={{ type: 'spring', stiffness: 300 }}
               >
                 <div className="p-3 rounded-lg bg-card/30 border border-border/30 group-hover:border-emerald-500/30 transition-all duration-300">
-                  <TechLogo name={tech.name} logoPath={tech.logoPath} url={tech.url} size="sm" />
+                  <TechLogo name={tech.name} logoPath={tech.logoPath} url={tech.url} size="md" />
                 </div>
                 <span className="text-xs mt-2 text-muted-foreground group-hover:text-foreground transition-colors font-mono">
                   {tech.name.toLowerCase()}
