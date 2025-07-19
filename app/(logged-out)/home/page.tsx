@@ -1,347 +1,246 @@
 'use client';
 
-import { Github, Star, Zap, Rocket, Shield, Palette, ArrowRight, Sparkles } from 'lucide-react';
+import {
+  Star,
+  Zap,
+  Rocket,
+  ArrowRight,
+  Code2,
+  Database,
+  Lock,
+  Sparkles,
+  Clock,
+} from 'lucide-react';
 import { TechLogo } from './components/TechCard';
 import { TerminalComponent } from './components/TerminalComponent';
 import { technologies } from './data/technologies';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
-// Modern features with better descriptions
-const modernFeatures = [
+// Developer-focused features with minimal design
+const coreFeatures = [
   {
-    icon: Rocket,
-    title: 'Next.js 15 Ready',
-    description: 'Built on the latest App Router with React 19 and Server Components.',
-    highlight: 'Latest',
-    color: 'from-blue-500 to-purple-600',
+    icon: Code2,
+    title: 'Next.js 15 + React 19',
+    description: 'Latest App Router with Server Components, Suspense, and streaming.',
+    metrics: '~3s build time',
   },
   {
-    icon: Shield,
+    icon: Lock,
     title: 'Auth & Security',
-    description: 'Complete Clerk integration with social logins and user management.',
-    highlight: 'Secure',
-    color: 'from-green-500 to-emerald-600',
+    description: 'Clerk integration with middleware protection and user management.',
+    metrics: 'SOC 2 compliant',
   },
   {
-    icon: Palette,
-    title: 'Design System',
-    description: 'Shadcn UI components with Tailwind CSS for beautiful interfaces.',
-    highlight: 'Beautiful',
-    color: 'from-orange-500 to-red-600',
+    icon: Database,
+    title: 'Database & ORM',
+    description: 'Drizzle ORM with PostgreSQL, migrations, and type safety.',
+    metrics: 'Type-safe queries',
   },
   {
     icon: Zap,
-    title: 'Subscription Ready',
-    description: 'Polar billing integration for seamless payment processing.',
-    highlight: 'Revenue',
-    color: 'from-purple-500 to-pink-600',
+    title: 'Billing Ready',
+    description: 'Polar integration for subscriptions, webhooks, and payments.',
+    metrics: 'PCI compliant',
   },
 ];
 
 export default function HomePage() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState(false);
-  const { scrollY } = useScroll();
-  const heroOffset = useTransform(scrollY, [0, 300], [0, -50]);
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
-
   useEffect(() => {
-    // Scroll to top on component mount
+    // Scroll to top on mount
     window.scrollTo(0, 0);
-
-    setIsVisible(true);
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  };
-
   return (
-    <div className="w-full min-h-screen font-[family-name:var(--font-geist-sans)]">
-      {/* Animated Background */}
+    <div className="w-full min-h-screen bg-background font-mono">
+      {/* Minimal background with subtle grid */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
-        <motion.div
-          className="absolute w-96 h-96 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-full blur-3xl"
-          animate={{
-            x: mousePosition.x / 50,
-            y: mousePosition.y / 50,
-          }}
-          transition={{ type: 'spring', stiffness: 50, damping: 30 }}
+        <div className="absolute inset-0 bg-background" />
+        <div
+          className="absolute inset-0 opacity-[0.02]"
           style={{
-            left: '10%',
-            top: '20%',
-          }}
-        />
-        <motion.div
-          className="absolute w-64 h-64 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl"
-          animate={{
-            x: -mousePosition.x / 30,
-            y: -mousePosition.y / 30,
-          }}
-          transition={{ type: 'spring', stiffness: 50, damping: 30 }}
-          style={{
-            right: '10%',
-            bottom: '20%',
+            backgroundImage: `
+              linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px',
           }}
         />
       </div>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6">
-        <motion.div
-          className="text-center max-w-6xl mx-auto"
-          style={{ y: heroOffset, opacity: heroOpacity }}
-        >
-          <AnimatePresence>
-            {isVisible && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-              >
-                <Badge
-                  variant="secondary"
-                  className="mb-6 px-4 py-2 text-sm bg-primary/10 border-primary/20 hover:bg-primary/20 transition-colors"
-                >
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Production-ready Next.js template
-                </Badge>
-
-                <motion.h1
-                  className="text-6xl lg:text-8xl font-bold mb-8 leading-tight"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                >
-                  <span className="bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent bg-size-200 animate-gradient-x">
-                    Build
-                  </span>{' '}
-                  <br />
-                  <span className="text-muted-foreground">Extraordinary</span>
-                  <br />
-                  <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                    Apps
-                  </span>
-                </motion.h1>
-
-                <motion.p
-                  className="text-xl lg:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                >
-                  The most complete Next.js template with authentication, billing, database, and
-                  everything you need to ship fast.
-                </motion.p>
-
-                <motion.div
-                  className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                >
-                  <Button
-                    size="lg"
-                    className="px-8 py-4 text-lg bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 border-0 shadow-lg hover:shadow-xl transition-all duration-300 group relative overflow-hidden"
-                    onClick={() =>
-                      window.open('https://github.com/filopedraz/kosuke-template', '_blank')
-                    }
-                  >
-                    <motion.div
-                      className="flex items-center"
-                      whileHover={{ x: 3 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                    >
-                      <Rocket className="mr-2 h-5 w-5 group-hover:animate-bounce" />
-                      Ship in Minutes
-                    </motion.div>
-                    {/* Rocket trail effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      initial={{ x: '-100%', skewX: -15 }}
-                      whileHover={{ x: '200%' }}
-                      transition={{ duration: 0.6, ease: 'easeInOut' }}
-                    />
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="px-8 py-4 text-lg backdrop-blur-sm hover:bg-primary/10 transition-all duration-300"
-                    onClick={() =>
-                      window.open('https://github.com/filopedraz/kosuke-template', '_blank')
-                    }
-                  >
-                    <Github className="mr-2 h-5 w-5" />
-                    View on GitHub
-                  </Button>
-                </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </section>
-
-      {/* Quick Start Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-6">
+      {/* Hero Section - Terminal First */}
+      <section className="pt-20 pb-32 px-6">
+        <div className="container mx-auto max-w-6xl">
+          {/* Main headline */}
           <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Get Started in 30 Seconds</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Clone the repository and run our interactive setup wizard. It&apos;s that simple.
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <Badge
+                variant="outline"
+                className="mb-6 px-3 py-1 text-xs font-mono bg-emerald-500/10 border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/20 hover:border-emerald-500/40 transition-all duration-300 cursor-default relative overflow-hidden"
+              >
+                {/* Shine effect */}
+                <motion.div
+                  className="absolute inset-0 -top-1 -bottom-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  initial={{ x: '-100%' }}
+                  animate={{ x: '200%' }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                    ease: 'easeInOut',
+                  }}
+                />
+                <Sparkles className="w-3 h-3 mr-1" />
+                production-ready
+              </Badge>
+            </motion.div>
+
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
+              Skip the <span className="text-muted-foreground/30 font-light">boilerplate</span>
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent block mt-4">
+                Ship features
+              </span>
+            </h1>
+
+            <p className="text-lg lg:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto font-sans">
+              Production-ready Next.js template with auth, billing, database, and deployment.
             </p>
           </motion.div>
 
+          {/* Terminal Hero */}
           <motion.div
-            className="max-w-3xl mx-auto"
+            className="mb-20"
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <TerminalComponent />
           </motion.div>
+
+          {/* CTA Buttons */}
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <Button
+              size="lg"
+              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-mono font-semibold"
+              onClick={() => window.open('https://github.com/filopedraz/kosuke-template', '_blank')}
+            >
+              <Rocket className="mr-2 h-4 w-4" />
+              git clone kosuke
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 py-3 font-mono"
+              onClick={() =>
+                window.open('https://github.com/filopedraz/kosuke-template#readme', '_blank')
+              }
+            >
+              <Code2 className="mr-2 h-4 w-4" />
+              Documentation
+            </Button>
+          </motion.div>
         </div>
       </section>
 
-      {/* Bento Features Section */}
-      <section className="py-32 px-6">
-        <div className="container mx-auto">
+      {/* Core Features */}
+      <section className="py-20 bg-muted/20">
+        <div className="container mx-auto px-6">
           <motion.div
-            className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-6">
-              Everything You Need,{' '}
-              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Nothing You Don&apos;t
-              </span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Carefully crafted components and integrations that work together seamlessly.
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 font-mono"># Everything you need</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-sans">
+              Carefully chosen technologies that work together seamlessly
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {modernFeatures.map((feature, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {coreFeatures.map((feature, index) => (
               <motion.div
                 key={feature.title}
-                variants={itemVariants}
-                className={`${
-                  index === 0 ? 'md:col-span-2' : ''
-                } ${index === 3 ? 'lg:col-span-2' : ''}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className="h-full border-0 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-500 group overflow-hidden relative">
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                  />
-                  <CardContent className="p-8 relative">
+                <Card className="h-full border border-border/50 bg-card/50 hover:bg-card/80 transition-all duration-300 group">
+                  <CardContent className="p-8">
                     <div className="flex items-start justify-between mb-6">
-                      <div
-                        className={`p-3 rounded-2xl bg-gradient-to-br ${feature.color} shadow-lg`}
-                      >
-                        <feature.icon className="h-6 w-6 text-white" />
+                      <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
+                        <feature.icon className="h-5 w-5" />
                       </div>
-                      <Badge
-                        variant="secondary"
-                        className="bg-primary/10 text-primary border-primary/20"
-                      >
-                        {feature.highlight}
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {feature.metrics}
                       </Badge>
                     </div>
-                    <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors">
-                      {feature.title}
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+
+                    <h3 className="text-xl font-semibold mb-3 font-mono">{feature.title}</h3>
+
+                    <p className="text-muted-foreground font-sans leading-relaxed">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Tech Stack Section */}
-      <section className="py-20 bg-muted/30">
+      {/* Tech Stack - Minimal Grid */}
+      <section className="py-20">
         <div className="container mx-auto px-6">
           <motion.div
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Powered by Industry Leaders</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Built with the most trusted technologies. Click any logo to explore their docs.
-            </p>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 font-mono"># built with</h2>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-7 gap-8 max-w-6xl mx-auto"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
+            className="grid grid-cols-4 md:grid-cols-7 gap-8 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             {technologies.map((tech, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
-                className="flex flex-col items-center space-y-3 group"
-                whileHover={{ y: -5 }}
+                className="flex flex-col items-center group cursor-pointer"
+                whileHover={{ y: -2 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <div className="p-4 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 group-hover:border-primary/30 group-hover:bg-card/80 transition-all duration-300 cursor-pointer">
-                  <TechLogo name={tech.name} logoPath={tech.logoPath} url={tech.url} size="md" />
+                <div className="p-3 rounded-lg bg-card/30 border border-border/30 group-hover:border-emerald-500/30 transition-all duration-300">
+                  <TechLogo name={tech.name} logoPath={tech.logoPath} url={tech.url} size="sm" />
                 </div>
-                <span className="text-sm font-medium text-center opacity-60 group-hover:opacity-100 transition-opacity">
-                  {tech.name}
+                <span className="text-xs mt-2 text-muted-foreground group-hover:text-foreground transition-colors font-mono">
+                  {tech.name.toLowerCase()}
                 </span>
               </motion.div>
             ))}
@@ -349,39 +248,175 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-32 px-6">
-        <div className="container mx-auto text-center">
+      {/* Bento Grid Features */}
+      <section className="py-20 bg-muted/10">
+        <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold mb-8">
-              Ready to{' '}
-              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Ship Fast?
-              </span>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 font-mono">
+              # Why developers choose this
             </h2>
-            <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Join thousands of developers building the next generation of web applications.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-sans">
+              Every component designed for speed, security, and scale
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          </motion.div>
+
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Large feature card */}
+              <motion.div
+                className="lg:col-span-2 lg:row-span-2"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <Card className="h-full p-8 bg-gradient-to-br from-emerald-500/10 to-emerald-600/5 border-emerald-500/20 hover:border-emerald-500/30 transition-all duration-300">
+                  <CardContent className="p-0 h-full flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 rounded-lg bg-emerald-500/20">
+                          <Rocket className="h-6 w-6 text-emerald-500" />
+                        </div>
+                        <h3 className="text-xl font-semibold font-mono">Ship in Minutes</h3>
+                      </div>
+                      <p className="text-muted-foreground font-sans mb-6 leading-relaxed">
+                        Complete full-stack application with authentication, database, billing, and
+                        deployment. Everything integrated and configured - just clone and ship.
+                      </p>
+                    </div>
+                    <div className="space-y-2 text-sm font-mono">
+                      <div className="flex justify-between text-emerald-500">
+                        <span>Clone to Deploy</span>
+                        <span>&lt; 5 min</span>
+                      </div>
+                      <div className="flex justify-between text-emerald-500">
+                        <span>Auth + DB + Billing</span>
+                        <span>✓ Included</span>
+                      </div>
+                      <div className="flex justify-between text-emerald-500">
+                        <span>Production Ready</span>
+                        <span>Day 1</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Auth card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+              >
+                <Card className="h-full p-6 bg-card/50 border-border/50 hover:bg-card/80 transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Lock className="h-5 w-5 text-blue-500" />
+                      <h3 className="font-semibold font-mono">Secure Auth</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground font-sans">
+                      Clerk integration with social logins, MFA, and enterprise SSO ready.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Database card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <Card className="h-full p-6 bg-card/50 border-border/50 hover:bg-card/80 transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Database className="h-5 w-5 text-purple-500" />
+                      <h3 className="font-semibold font-mono">Type-Safe DB</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground font-sans">
+                      Drizzle ORM with PostgreSQL. Migrations, relations, and full TypeScript
+                      support.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Billing card */}
+              <motion.div
+                className="md:col-span-2"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <Card className="h-full p-6 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/20 hover:border-yellow-500/30 transition-all duration-300">
+                  <CardContent className="p-0">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <Rocket className="h-5 w-5 text-yellow-500" />
+                        <h3 className="font-semibold font-mono">Revenue Ready</h3>
+                      </div>
+                      <Badge variant="outline" className="font-mono text-xs">
+                        Polar + Stripe
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground font-sans">
+                      Complete subscription management with webhooks, usage tracking, and analytics.
+                      Start monetizing from day one.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-32 px-6">
+        <div className="container mx-auto text-center max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="mb-8">
+              <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-4 py-2 text-sm font-mono text-muted-foreground border border-border/30">
+                <Clock className="h-3 w-3" />
+                <span>Last updated: {new Date().toLocaleDateString()}</span>
+              </div>
+            </div>
+
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 font-mono">Ready to ship?</h2>
+
+            <p className="text-lg text-muted-foreground mb-12 font-sans">
+              Join developers building the next generation of web applications
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                className="px-10 py-4 text-lg bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 border-0 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-black font-mono font-semibold"
                 onClick={() =>
                   window.open('https://github.com/filopedraz/kosuke-template', '_blank')
                 }
               >
-                <Star className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                <Star className="mr-2 h-4 w-4" />
                 Star on GitHub
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="px-10 py-4 text-lg backdrop-blur-sm hover:bg-primary/10 transition-all duration-300"
+                className="px-8 py-3 font-mono"
                 onClick={() =>
                   window.open(
                     'https://github.com/filopedraz/kosuke-template/blob/main/cli/README.md',
@@ -390,7 +425,7 @@ export default function HomePage() {
                 }
               >
                 Setup Guide
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </motion.div>
