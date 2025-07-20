@@ -6,13 +6,13 @@ import { runPeriodicSync, checkSyncHealth } from '@/lib/billing/cron-sync';
  * This endpoint is called by Vercel Cron Jobs to keep subscription data in sync
  *
  * Security: This endpoint is protected by CRON_SECRET environment variable
- * - Vercel Cron automatically sends Authorization header with Bearer token
- * - Requests without valid token are rejected with 401 Unauthorized
+ * - Vercel Cron automatically sends secret as query parameter
+ * - Requests without valid secret are rejected with 401 Unauthorized
  * - In production, CRON_SECRET is required; development allows skipping auth
  *
  * Setup:
  * 1. Set CRON_SECRET environment variable in Vercel Dashboard
- * 2. Vercel.json is configured to send this token in Authorization header
+ * 2. Vercel.json is configured to send this secret as query parameter
  * 3. Only authenticated requests can trigger the sync
  */
 
@@ -21,8 +21,10 @@ export async function GET(request: Request) {
     // Security check - verify the request is authorized
     const cronSecret = process.env.CRON_SECRET;
     if (cronSecret) {
-      const authHeader = request.headers.get('authorization');
-      if (authHeader !== `Bearer ${cronSecret}`) {
+      const url = new URL(request.url);
+      const providedSecret = url.searchParams.get('secret');
+
+      if (providedSecret !== cronSecret) {
         console.warn('🚫 Unauthorized cron request attempt');
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
