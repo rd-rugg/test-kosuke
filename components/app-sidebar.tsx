@@ -32,10 +32,15 @@ import {
 const data = {
   navMain: [
     {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: SquareTerminal,
+      isActive: true,
+    },
+    {
       title: 'Playground',
       url: '#',
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: 'History',
