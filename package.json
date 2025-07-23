@@ -22,8 +22,8 @@
     "db:seed": "npx tsx -r dotenv/config lib/db/seed.ts",
     "email:dev": "email dev --dir emails --port 3001",
     "email:export": "email export --dir emails --out .react-email",
-    "shadcn:update": "npx shadcn@latest add -a -y -o",
-    "shadcn:check": "npx shadcn@latest diff"
+    "shadcn:update": "npx shadcn@canary add -a -y -o",
+    "shadcn:check": "npx shadcn@canary diff"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.0",
