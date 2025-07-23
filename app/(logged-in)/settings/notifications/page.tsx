@@ -7,7 +7,35 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useUser } from '@clerk/nextjs';
 import { useNotificationSettings } from '@/hooks/use-notification-settings';
-import { NotificationsSettingsSkeleton } from '@/components/skeletons';
+import { ToggleSkeleton, ButtonSkeleton } from '@/components/skeletons';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Page-specific skeleton for notifications settings
+function NotificationsSettingsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="rounded-lg border p-6 space-y-6">
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+
+        <div className="space-y-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <ToggleSkeleton key={i} />
+          ))}
+        </div>
+
+        <div className="pt-4 border-t space-y-2">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-5 w-56" />
+        </div>
+
+        <ButtonSkeleton className="w-full sm:w-auto" />
+      </div>
+    </div>
+  );
+}
 
 export default function NotificationsPage() {
   const { user, isSignedIn } = useUser();

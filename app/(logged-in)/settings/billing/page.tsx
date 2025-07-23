@@ -16,7 +16,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { BillingSkeleton } from '@/components/skeletons';
+import { BadgeSkeleton, ButtonSkeleton } from '@/components/skeletons';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +31,129 @@ import {
 } from '@/components/ui/alert-dialog';
 import { useSubscriptionData } from '@/hooks/use-subscription-data';
 import { useSubscriptionActions } from '@/hooks/use-subscription-actions';
+
+// Page-specific skeleton for billing page
+function BillingSkeleton() {
+  return (
+    <div className="space-y-6">
+      {/* Page header */}
+      <div>
+        <Skeleton className="h-6 w-48 mb-2" />
+        <Skeleton className="h-4 w-72" />
+      </div>
+
+      {/* Current Plan Card */}
+      <div className="rounded-lg border p-6 space-y-4">
+        <div className="flex items-center gap-2 mb-4">
+          <Skeleton className="h-5 w-5" />
+          <Skeleton className="h-5 w-24" />
+        </div>
+        <Skeleton className="h-4 w-32 mb-2" />
+
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <Skeleton className="h-6 w-16" />
+            <Skeleton className="h-4 w-40" />
+          </div>
+          <div className="text-right space-y-1">
+            <Skeleton className="h-8 w-12" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-12" />
+            <BadgeSkeleton />
+          </div>
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+        </div>
+
+        <Skeleton className="h-px w-full bg-border" />
+
+        <div className="space-y-3">
+          <Skeleton className="h-4 w-32" />
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4 rounded-full" />
+              <Skeleton className="h-4 w-40" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Cancel Subscription Card (conditional) */}
+      <div className="rounded-lg border border-destructive/20 p-6 space-y-4">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-5 w-5" />
+          <Skeleton className="h-5 w-36" />
+        </div>
+        <Skeleton className="h-4 w-64" />
+
+        <div className="rounded-md bg-destructive/10 p-4 space-y-2">
+          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-3 w-40" />
+        </div>
+
+        <div className="space-y-2">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+          ))}
+        </div>
+
+        <ButtonSkeleton className="bg-destructive" />
+      </div>
+
+      {/* Upgrade Options */}
+      <div className="rounded-lg border p-6 space-y-4">
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-4 w-56" />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="relative rounded-lg border p-6 space-y-4">
+              {i === 0 && <BadgeSkeleton className="absolute top-4 right-4" />}
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+              <div className="space-y-1">
+                <Skeleton className="h-8 w-16" />
+                <Skeleton className="h-4 w-20" />
+              </div>
+              <div className="space-y-2">
+                {Array.from({ length: 4 }).map((_, j) => (
+                  <div key={j} className="flex items-center gap-2">
+                    <Skeleton className="h-4 w-4 rounded-full" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                ))}
+              </div>
+              <ButtonSkeleton className="w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Billing Information */}
+      <div className="rounded-lg border p-6 space-y-4">
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-4 w-48" />
+
+        <div className="rounded-md bg-muted p-4 space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const PRICING = {
   free: {

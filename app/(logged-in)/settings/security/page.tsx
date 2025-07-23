@@ -9,7 +9,41 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useUser } from '@clerk/nextjs';
-import { SecuritySettingsSkeleton } from '@/components/skeletons';
+import { ButtonSkeleton } from '@/components/skeletons';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Page-specific skeleton for security settings
+function SecuritySettingsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="rounded-lg border border-destructive/20 p-6 space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+
+        <div className="space-y-4">
+          <Skeleton className="h-4 w-full" />
+
+          <div className="rounded-md bg-destructive/10 p-4 space-y-2">
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-3 w-40" />
+          </div>
+
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+
+          <div className="flex gap-2">
+            <ButtonSkeleton />
+            <ButtonSkeleton className="bg-destructive" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function SecurityPage() {
   const { user, isSignedIn } = useUser();
