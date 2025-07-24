@@ -104,6 +104,32 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
               color: 'oklch(from var(--primary) l c h / 0.8)',
             },
           },
+          // OTP specific elements
+          otpCodeFieldInput: {
+            backgroundColor: 'var(--input)',
+            borderColor: 'oklch(from var(--muted-foreground) l c h / 0.3)',
+            borderWidth: '1.5px',
+            color: 'var(--foreground)',
+            boxShadow: 'none',
+            backgroundImage: 'none',
+            '&:focus': {
+              borderColor: 'var(--ring)',
+              boxShadow: '0 0 0 2px oklch(from var(--ring) l c h / 0.2)',
+            },
+          },
+          otpCodeField: {
+            '& input': {
+              backgroundColor: 'var(--input)',
+              borderColor: 'oklch(from var(--muted-foreground) l c h / 0.3)',
+              borderWidth: '1.5px',
+              color: 'var(--foreground)',
+              boxShadow: 'none',
+              '&:focus': {
+                borderColor: 'var(--ring)',
+                boxShadow: '0 0 0 2px oklch(from var(--ring) l c h / 0.2)',
+              },
+            },
+          },
           // Modal and popup elements
           modalContent: {
             backgroundColor: 'var(--background)',
