@@ -14,7 +14,16 @@ export default function Footer({ className }: FooterProps) {
     <footer className={cn('w-full mt-auto py-4 border-t', className)}>
       <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Kosuke Template. All rights reserved.
+          © {new Date().getFullYear()} Markathon. All rights reserved. Made by{' '}
+          <Link
+            href="https://www.underdogsgroup.it/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground transition-colors underline underline-offset-4"
+          >
+            Underdogs Group
+          </Link>
+          .
         </p>
         <div className="flex items-center gap-4">
           <Link
