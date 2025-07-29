@@ -22,13 +22,29 @@ else
     # Ensure /app directory exists
     mkdir -p /app
 
-    # Copy all template files to /app (mounted volume)
+    # Copy all template files to /app (mounted volume), excluding node_modules first
     echo "📁 Copying template files..."
-    cp -r /template/* /app/ 2>/dev/null || true
+    find /template -mindepth 1 -maxdepth 1 ! -name "node_modules" -exec cp -r {} /app/ \; 2>/dev/null || true
 
-    # Copy hidden files (like .env.example, .gitignore, etc.)
-    echo "📁 Copying hidden template files..."
-    find /template -name ".*" -type f -exec cp {} /app/ \; 2>/dev/null || true
+    # Copy essential hidden files only
+    echo "📁 Copying essential hidden files..."
+    for file in .env.example .env.local .gitignore .editorconfig .nvmrc; do
+      if [ -f "/template/$file" ]; then
+        cp "/template/$file" "/app/$file" 2>/dev/null || true
+      fi
+    done
+
+    # Copy node_modules separately with proper handling
+    if [ -d "/template/node_modules" ]; then
+      echo "📦 Copying node_modules (this may take a moment)..."
+      cp -r /template/node_modules /app/ 2>/dev/null || {
+        echo "⚠️  Failed to copy node_modules, running npm install instead..."
+        cd /app && npm install --silent
+      }
+    else
+      echo "📦 Installing dependencies..."
+      cd /app && npm install --silent
+    fi
 
     # Copy .env.example to .env.local if it doesn't exist
     if [ -f "/app/.env.example" ] && [ ! -f "/app/.env.local" ]; then

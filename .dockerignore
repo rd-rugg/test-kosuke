@@ -66,4 +66,38 @@ cli/__pycache__/
 
 # Environment
 .env
-.env.example
+
+# Problematic configuration files that shouldn't be in template
+.babelrc
+.babelrc.*
+.eslintcache
+.eslintrc
+.eslintrc.*
+.jshintrc
+.prettierignore
+.prettierrc
+.prettierrc.*
+.airtap.yml
+.attw.json
+.browserslistrc
+.travis.yml
+.istanbul.yml
+.lintstagedrc
+.nycrc
+.release-it.*
+.release-please-manifest.json
+.runkit_example.js
+.stale.yml
+.tonic_example.js
+.ts-jest-digest
+.zuul.yml
+.cursorignore
+.kosuke-setup-progress.json
+.package-lock.json
+test-project/
+
+# Keep essential hidden files
+!.env.example
+!.gitignore
+!.editorconfig
+!.nvmrc
