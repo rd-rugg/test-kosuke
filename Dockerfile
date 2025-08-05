@@ -1,30 +1,22 @@
 FROM node:20-alpine
 
-# Set up template directory first
-WORKDIR /template
+# Set working directory for the project
+WORKDIR /app
 
-# Environment variables for template configuration
+# Environment variables for runtime configuration
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV TEMPLATE_VERSION=1.0.0
 
-# Copy template files to /template (not /app to avoid volume mount conflicts)
-COPY package*.json ./
-COPY . .
+# Update npm to latest version for better performance
+RUN npm install -g npm@latest
 
-# Pre-install dependencies for faster container startup
-RUN npm ci --production=false && npm cache clean --force
-
-# Copy and set up entrypoint script
+# Copy and set up simplified entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
-
-# Set working directory for the actual project
-WORKDIR /app
 
 # Expose port for Next.js
 EXPOSE 3000
 
-# Use entrypoint for template initialization
+# Use simplified entrypoint for dependency management and startup
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"] 
