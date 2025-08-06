@@ -27,6 +27,13 @@ if [ -f ".env.example" ] && [ ! -f ".env" ]; then
   cp .env.example .env
 fi
 
+# Run database migrations/push schema
+echo "🗄️ Setting up database schema..."
+npm run db:push || {
+  echo "⚠️ Database setup failed. Make sure PostgreSQL is running and accessible."
+  echo "   You can start it with: docker compose up -d postgres"
+}
+
 # Show project structure for debugging in dev mode
 if [ "$DEV_MODE" = "true" ]; then
   echo "📋 Project structure:"
