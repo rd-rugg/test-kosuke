@@ -21,12 +21,6 @@ echo "📦 Installing dependencies..."
 npm install --silent  
 echo "📦 Dependencies installed"
 
-# Create .env.local from .env.example if it doesn't exist
-if [ -f ".env.example" ] && [ ! -f ".env" ]; then
-  echo "📝 Creating .env from .env.example..."
-  cp .env.example .env
-fi
-
 # Run database migrations/push schema
 echo "🗄️ Setting up database schema..."
 npm run db:push || {
