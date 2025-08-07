@@ -3,15 +3,8 @@
 - TypeScript
 - React 19,
 - Next.js 15 (App Router)
-- Vercel AI SDK
 - Shadcn UI
-- Tailwind CSS
-
-### Project Overview
-
-- You are building a web app that allows users to create and manage their own AI agents.
-- The app is built with Next.js 15 (App Router), TypeScript, and Shadcn UI.
-- The app is hosted on Vercel.
+- Tailwind v4
 
 ### Project Structure
 
@@ -20,7 +13,6 @@
 - `./components`: The directory for the components
 - `./lib`: The directory for the lib.
 - `./public`: The directory for the public assets.
-- `./templates`: The directory for the templates.
 
 ### Component Rules
 
@@ -171,6 +163,11 @@
 | Mobile Optimization            | Mobile-friendly in most areas; the experience is acceptable though not fully polished for all mobile nuances.                  | Optimized for mobile; the design performs well on smartphones with only minor issues to address.      | Fully mobile-first; the app offers a smooth, fast, and engaging mobile experience with well-sized touch targets and rapid load times.   |
 | Code Quality & Maintainability | Reasonable code quality; standard practices are mostly followed but could benefit from improved organization or documentation. | Clean, well-commented code adhering to modern best practices; relatively easy to maintain and scale.  | Exemplary code quality; modular, semantic, and thoroughly documented code ensures excellent maintainability and scalability.            |
 
+When building new components or updating existing ones, act as a world class designer.
+Your job is to take this prototype and turn it into a impeccably designed web application.
+This application should be in the top applications and should be a winner of an Apple design award.
+Use the Rubric guidelines as a guide. You should ship only components that have 5 in each category.
+
 ### Contributing Guidelines - MUST FOLLOW
 
 - Always use inline CSS with tailwind and Shadcn UI.
@@ -182,3 +179,8 @@
 - Make sure to implement a good responsive design.
 - Avoid code duplication. Keep the code base very clean and organised. Avoid having big files.
 - Make sure that the code you write it's consistent with the rest of the app in terms of UI/UX, code style, naming conventions, and formatting.
+- Don't create new .md files for documenting your changes.
+
+### User interactions
+
+If the User request is not clear, ask for more details and provide clarification questions.
