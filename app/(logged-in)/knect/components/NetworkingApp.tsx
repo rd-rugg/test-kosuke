@@ -6,24 +6,11 @@ import ContactList from './ContactList';
 import ContactForm from './ContactForm';
 import QRScanner from './QRScanner';
 import { useToast } from '@/hooks/use-toast';
+import type { Contact } from '../types';
 
 type AppView = 'dashboard' | 'contacts' | 'add-contact' | 'edit-contact' | 'qr-scanner';
 
-interface Contact {
-  id: string;
-  name: string;
-  company: string;
-  role: string;
-  email?: string;
-  linkedinUrl?: string;
-  tags: string[];
-  priority: 1 | 2 | 3;
-  notes: string;
-  synced: boolean;
-  createdAt: string;
-  updatedAt: string;
-  avatarUrl?: string;
-}
+// Contact type imported from ../types
 
 export default function NetworkingApp() {
   const { toast } = useToast();
@@ -45,7 +32,7 @@ export default function NetworkingApp() {
     setEditingContact(null);
   };
 
-  const handleSaveContact = (contactData: any) => {
+  const handleSaveContact = (contactData: Contact) => {
     if (editingContact) {
       setContacts(prev =>
         prev.map(c => (c.id === editingContact.id ? { ...contactData, id: editingContact.id, createdAt: editingContact.createdAt } : c))

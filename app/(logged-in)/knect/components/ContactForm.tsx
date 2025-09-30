@@ -13,9 +13,11 @@ import { useToast } from '@/hooks/use-toast';
 import { openLinkedInProfile } from '@/lib/knect/linkedin';
 import { useSpeechToText } from '@/hooks/use-speech-to-text';
 
+import type { Contact } from '../types';
+
 interface ContactFormProps {
-  initialData?: any;
-  onSave: (contact: any) => void;
+  initialData?: Partial<Contact>;
+  onSave: (contact: Contact) => void;
   onCancel: () => void;
 }
 
@@ -59,7 +61,7 @@ export default function ContactForm({ initialData, onSave, onCancel }: ContactFo
       toast({ title: 'Validation Error', description: 'Please fix the errors in the form', variant: 'destructive' });
       return;
     }
-    const contact = {
+    const contact: Contact = {
       ...formData,
       id: initialData?.id || `contact-${Date.now()}`,
       synced: false,
@@ -77,7 +79,7 @@ export default function ContactForm({ initialData, onSave, onCancel }: ContactFo
       toast({ title: 'Validation Error', description: 'Please fix the errors in the form', variant: 'destructive' });
       return;
     }
-    const contact = {
+    const contact: Contact = {
       ...formData,
       id: initialData?.id || `contact-${Date.now()}`,
       synced: false,

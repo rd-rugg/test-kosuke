@@ -6,22 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Search, Star, Building, Cloud, CloudOff } from 'lucide-react';
+import type { Contact } from '../types';
 import { useState, useEffect } from 'react';
 
-interface Contact {
-  id: string;
-  name: string;
-  company: string;
-  role: string;
-  email?: string;
-  linkedinUrl?: string;
-  tags: string[];
-  priority: 1 | 2 | 3;
-  notes: string;
-  synced: boolean;
-  createdAt: string;
-  avatarUrl?: string;
-}
+// Contact type imported from ../types
 
 interface ContactListProps {
   contacts: Contact[];
