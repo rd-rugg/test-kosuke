@@ -3,7 +3,7 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { QrCode, X, Flashlight, RotateCcw } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import QrScanner from 'qr-scanner';
 
@@ -24,7 +24,7 @@ export default function QRScanner({ onScanComplete, onClose }: QRScannerProps) {
     return () => stopScanner();
   }, [initQRScanner]);
 
-  const initQRScanner = async () => {
+  const initQRScanner = useCallback(async () => {
     if (!videoRef.current) return;
     try {
       setCameraError(null);
@@ -42,7 +42,7 @@ export default function QRScanner({ onScanComplete, onClose }: QRScannerProps) {
       setCameraError('Camera access denied. Please enable camera permissions.');
       toast({ title: 'Camera Error', description: 'Please enable camera permissions to scan QR codes', variant: 'destructive' });
     }
-  };
+  }, [toast]);
 
   const stopScanner = () => {
     if (qrScannerRef.current) {

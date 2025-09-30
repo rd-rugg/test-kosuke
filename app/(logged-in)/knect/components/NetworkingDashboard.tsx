@@ -67,11 +67,15 @@ export default function NetworkingDashboard({ onScanQR, onAddContact, onViewCont
       } catch {
         setLocation({ latitude, longitude, address: `${latitude.toFixed(4)}, ${longitude.toFixed(4)}` });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMsg = 'Unable to get your location.';
-      if (error?.code === error?.PERMISSION_DENIED) errorMsg = 'Location access denied.';
-      else if (error?.code === error?.POSITION_UNAVAILABLE) errorMsg = 'Location information unavailable.';
-      else if (error?.code === error?.TIMEOUT) errorMsg = 'Location request timed out.';
+      const code = typeof error === 'object' && error && 'code' in (error as Record<string, unknown>)
+        ? (error as { code?: number }).code
+        : undefined;
+      // GeolocationPositionError codes: 1=PERMISSION_DENIED, 2=POSITION_UNAVAILABLE, 3=TIMEOUT
+      if (code === 1) errorMsg = 'Location access denied.';
+      else if (code === 2) errorMsg = 'Location information unavailable.';
+      else if (code === 3) errorMsg = 'Location request timed out.';
       setLocationError(errorMsg);
       toast({ title: 'Location access failed', description: errorMsg, variant: 'destructive' });
     } finally {
