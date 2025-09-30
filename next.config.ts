@@ -36,24 +36,24 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { dev }) => {
-    // Suppress OpenTelemetry warnings in development
-    if (dev) {
-      config.ignoreWarnings = [
-        ...(config.ignoreWarnings || []),
-        {
-          module: /node_modules\/@opentelemetry\/instrumentation/,
-          message: /Critical dependency: the request of a dependency is an expression/,
-        },
-      ];
-    }
+  webpack: (config) => {
+    // Suppress OpenTelemetry critical dependency warnings in all envs
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      {
+        module: /node_modules[\\\/]@opentelemetry[\\\/]instrumentation/,
+        message: /Critical dependency: the request of a dependency is an expression/,
+      },
+    ];
     return config;
   },
 };
 
 // Only apply Sentry configuration in production
 const finalConfig =
-  process.env.NODE_ENV === 'production' && process.env.SENTRY_TELEMETRY !== 'false'
+  process.env.SENTRY_TELEMETRY === 'false'
+    ? nextConfig
+    : process.env.NODE_ENV === 'production'
     ? withSentryConfig(nextConfig, {
         // For all available options, see:
         // https://www.npmjs.com/package/@sentry/webpack-plugin#options

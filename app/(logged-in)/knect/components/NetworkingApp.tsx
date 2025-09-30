@@ -45,7 +45,7 @@ export default function NetworkingApp() {
     setEditingContact(null);
   };
 
-  const handleSaveContact = (contactData: any) => {
+  const handleSaveContact = (contactData: Contact) => {
     if (editingContact) {
       setContacts(prev =>
         prev.map(c => (c.id === editingContact.id ? { ...contactData, id: editingContact.id, createdAt: editingContact.createdAt } : c))
