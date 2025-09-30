@@ -14,30 +14,14 @@ import { openLinkedInProfile } from '@/lib/knect/linkedin';
 import { useSpeechToText } from '@/hooks/use-speech-to-text';
 
 interface ContactFormProps {
-  initialData?: Partial<Contact>;
-  onSave: (contact: Contact) => void;
+  initialData?: any;
+  onSave: (contact: any) => void;
   onCancel: () => void;
 }
 
-type Contact = {
-  id: string;
-  name: string;
-  company: string;
-  role: string;
-  email?: string;
-  linkedinUrl?: string;
-  notes: string;
-  priority: 1 | 2 | 3;
-  tags: string[];
-  avatarUrl?: string;
-  synced: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export default function ContactForm({ initialData, onSave, onCancel }: ContactFormProps) {
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Omit<Contact, 'id' | 'synced' | 'createdAt' | 'updatedAt'>>({
+  const [formData, setFormData] = useState({
     name: initialData?.name || '',
     company: initialData?.company || '',
     role: initialData?.role || '',
@@ -75,7 +59,7 @@ export default function ContactForm({ initialData, onSave, onCancel }: ContactFo
       toast({ title: 'Validation Error', description: 'Please fix the errors in the form', variant: 'destructive' });
       return;
     }
-    const contact: Contact = {
+    const contact = {
       ...formData,
       id: initialData?.id || `contact-${Date.now()}`,
       synced: false,
@@ -93,7 +77,7 @@ export default function ContactForm({ initialData, onSave, onCancel }: ContactFo
       toast({ title: 'Validation Error', description: 'Please fix the errors in the form', variant: 'destructive' });
       return;
     }
-    const contact: Contact = {
+    const contact = {
       ...formData,
       id: initialData?.id || `contact-${Date.now()}`,
       synced: false,

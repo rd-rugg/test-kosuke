@@ -32,7 +32,7 @@ export default function NetworkingDashboard({ onScanQR, onAddContact, onViewCont
 
   const [location, setLocation] = useState<{ latitude: number; longitude: number; address: string } | null>(null);
   const [locationLoading, setLocationLoading] = useState(false);
-  const [locationError, setLocationError] = useState<string | null>(null);
+  const [, setLocationError] = useState<string | null>(null);
 
   const getLocation = async () => {
     if (!navigator.geolocation) {
@@ -80,9 +80,9 @@ export default function NetworkingDashboard({ onScanQR, onAddContact, onViewCont
   };
 
   useEffect(() => {
-    const contacts = JSON.parse(localStorage.getItem('networking-contacts') || '[]');
-    const unsynced = contacts.filter((c: any) => !c.synced).length;
-    const reminders = contacts.filter((c: any) => c.reminder && new Date(c.reminder) <= new Date()).length;
+    const contacts = JSON.parse(localStorage.getItem('networking-contacts') || '[]') as Array<{ synced?: boolean; reminder?: string | null }>;
+    const unsynced = contacts.filter((c) => !c.synced).length;
+    const reminders = contacts.filter((c) => c.reminder && new Date(c.reminder) <= new Date()).length;
 
     setStats({
       totalContacts: contacts.length,

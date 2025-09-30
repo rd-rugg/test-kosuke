@@ -33,7 +33,7 @@ export default function ContactList({ contacts: initialContacts, onContactClick,
   const [contacts, setContacts] = useState<Contact[]>(initialContacts);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<'name' | 'priority' | 'date'>('date');
+  const sortBy: 'name' | 'priority' | 'date' = 'date';
 
   useEffect(() => setContacts(initialContacts), [initialContacts]);
 

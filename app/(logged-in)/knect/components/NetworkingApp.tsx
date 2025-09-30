@@ -45,7 +45,7 @@ export default function NetworkingApp() {
     setEditingContact(null);
   };
 
-  const handleSaveContact = (contactData: Contact) => {
+  const handleSaveContact = (contactData: any) => {
     if (editingContact) {
       setContacts(prev =>
         prev.map(c => (c.id === editingContact.id ? { ...contactData, id: editingContact.id, createdAt: editingContact.createdAt } : c))
@@ -73,7 +73,7 @@ export default function NetworkingApp() {
   };
 
   const handleQRScanComplete = (scannedData: string) => {
-    let initialData: Partial<Contact> = { linkedinUrl: scannedData };
+    const initialData: Partial<Contact> = { linkedinUrl: scannedData };
     try {
       const url = new URL(scannedData);
       if (url.hostname.includes('linkedin.com')) {

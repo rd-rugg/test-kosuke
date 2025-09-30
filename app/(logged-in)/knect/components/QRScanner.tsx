@@ -22,7 +22,7 @@ export default function QRScanner({ onScanComplete, onClose }: QRScannerProps) {
   useEffect(() => {
     initQRScanner();
     return () => stopScanner();
-  }, []);
+  }, [initQRScanner]);
 
   const initQRScanner = async () => {
     if (!videoRef.current) return;
@@ -143,7 +143,7 @@ export default function QRScanner({ onScanComplete, onClose }: QRScannerProps) {
             Manual
           </Button>
         </div>
-        <p className="text-white/70 text-xs text-center mt-3">Tap "Demo Scan" to simulate scanning a LinkedIn QR code</p>
+        <p className="text-white/70 text-xs text-center mt-3">Tap &quot;Demo Scan&quot; to simulate scanning a LinkedIn QR code</p>
       </div>
     </div>
   );
