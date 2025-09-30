@@ -21,7 +21,7 @@ export default function ContactList({ contacts: initialContacts, onContactClick,
   const [contacts, setContacts] = useState<Contact[]>(initialContacts);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const sortBy: 'name' | 'priority' | 'date' = 'date';
+  const sortBy = useState<'name' | 'priority' | 'date'>('date')[0];
 
   useEffect(() => setContacts(initialContacts), [initialContacts]);
 

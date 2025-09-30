@@ -42,7 +42,7 @@ export default function QRScanner({ onScanComplete, onClose }: QRScannerProps) {
       setCameraError('Camera access denied. Please enable camera permissions.');
       toast({ title: 'Camera Error', description: 'Please enable camera permissions to scan QR codes', variant: 'destructive' });
     }
-  }, [toast]);
+  }, [toast, onScanComplete]);
 
   const stopScanner = () => {
     if (qrScannerRef.current) {
