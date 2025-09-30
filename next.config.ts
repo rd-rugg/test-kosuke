@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
 
 // Only apply Sentry configuration in production
 const finalConfig =
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV === 'production' && process.env.SENTRY_TELEMETRY !== 'false'
     ? withSentryConfig(nextConfig, {
         // For all available options, see:
         // https://www.npmjs.com/package/@sentry/webpack-plugin#options
