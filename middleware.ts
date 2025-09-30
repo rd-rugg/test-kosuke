@@ -1,6 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { AUTH_ROUTES, createSafeRedirectUrl } from '@/lib/auth';
+import { AUTH_ROUTES } from '@/lib/auth/constants';
+import { createSafeRedirectUrl } from '@/lib/auth/utils';
 
 // Define public routes that don't require authentication
 const isPublicRoute = createRouteMatcher([

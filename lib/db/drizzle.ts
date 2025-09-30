@@ -3,9 +3,12 @@ import postgres from 'postgres';
 
 import * as schema from './schema';
 
-if (!process.env.POSTGRES_URL) {
-  throw new Error('POSTGRES_URL environment variable is not set');
-}
+// Gracefully degrade when POSTGRES_URL is not set (development without DB)
+const hasDatabaseUrl = typeof process !== 'undefined' && !!process.env.POSTGRES_URL;
 
-export const client = postgres(process.env.POSTGRES_URL);
-export const db = drizzle(client, { schema });
+export const client = hasDatabaseUrl ? postgres(process.env.POSTGRES_URL as string) : (null as unknown as ReturnType<typeof postgres>);
+export const db = hasDatabaseUrl ? drizzle(client, { schema }) : (new Proxy({}, {
+  get: () => {
+    throw new Error('Database is not configured (POSTGRES_URL missing).');
+  },
+}) as unknown as ReturnType<typeof drizzle>);

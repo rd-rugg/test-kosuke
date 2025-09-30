@@ -235,6 +235,16 @@ For complete deployment instructions, production configuration, and DevOps guida
 
 The CLI guide provides step-by-step instructions for both development and production environments.
 
+## 🔗 Knect (NetworkCRM) Integration
+
+- Route: visit `/knect` (requires Clerk auth)
+- Dependency: install `qr-scanner` (already added)
+- Asset: copy `networkcrm/src/assets/lets-knect-logo.png` → `public/logos/lets-knect-logo.png`
+- Notes:
+  - Camera access required for QR scanning.
+  - Speech-to-text uses a demo transcription; wire to a backend when ready.
+  - Contacts are stored in `localStorage` for now.
+
 ## 📄 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
